@@ -45,7 +45,7 @@ export const LANDMARKS: Record<LandmarkId, Landmark> = {
   baseline_doubles_right: { id: 'baseline_doubles_right', label: 'Baseline × right doubles sideline', court: { x: dx, y: baseY } },
 };
 
-/** Click order shown to the user. First 4 required (DECISIONS.md D-006), last 2 optional. */
+/** Click order shown to the user. First 4 required, last 2 optional. */
 export const CALIBRATION_ORDER: LandmarkId[] = [
   'baseline_singles_left', 'baseline_singles_right', 'service_singles_right', 'service_singles_left',
   'center_mark', 'service_T',

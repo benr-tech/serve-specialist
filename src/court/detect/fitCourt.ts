@@ -50,9 +50,9 @@ const MIN_SUPPORTING_LINES = 3;
 const MIN_HITS_PER_LINE = 12;
 
 export interface CourtFit {
-  /** court metres → image px (server's baseline at y = 0, +x to the server's right). */
+  /** court metres -> image px (server's baseline at y = 0, +x to the server's right). */
   courtToImage: Mat3;
-  /** Share of the visible projected court lines that land on line pixels (0–1). */
+  /** Share of the visible projected court lines that land on line pixels (0-1). */
   hitRatio: number;
   /** How many sample points of the court were inside the image. */
   visibleSamples: number;
@@ -83,7 +83,7 @@ function homography4(src: Point[], dst: Point[]): Mat3 | null {
 }
 
 /**
- * Rejects fits that squash the court: the server's service box area (singles width × baseline to
+ * Rejects fits that squash the court: the server's service box area (singles width x baseline to
  * service line) must come out as a real, convex quadrilateral covering some of the picture.
  */
 function plausible(H: Mat3, w: number, h: number): boolean {
@@ -135,7 +135,7 @@ function scoreFit(H: Mat3, dil: Uint8Array, w: number, h: number, stride = 1): {
  */
 function twoFamilies(lines: ImageLine[], w: number, h: number): [ImageLine[], ImageLine[]] {
   const center = { x: w / 2, y: h / 2 };
-  /** Does line l point at the vanishing point v (homogeneous; z≈0 means "at infinity")? */
+  /** Does line l point at the vanishing point v (homogeneous; z~0 means "at infinity")? */
   const agrees = (l: ImageLine, v: [number, number, number]) => {
     const dir = { x: -l.b, y: l.a }; // along the line
     const t = -(l.a * center.x + l.b * center.y + l.c);
@@ -170,7 +170,7 @@ function twoFamilies(lines: ImageLine[], w: number, h: number): [ImageLine[], Im
  */
 function distinctSupport(H: Mat3, lines: ImageLine[], w: number, h: number, minDistinct = 4): boolean {
   const minLen = 0.12 * Math.min(w, h);
-  const used = new Map<number, number>(); // detected line → model line
+  const used = new Map<number, number>(); // detected line -> model line
   let across = 0, along = 0;
   for (let mi = 0; mi < MODEL_LINES.length; mi++) {
     const m = MODEL_LINES[mi]!;
@@ -202,7 +202,7 @@ function pairs<T>(xs: T[]): [T, T][] {
   return out;
 }
 
-/** Jacobian determinant of court → image at a court point. Negative = a real (non-mirrored) view from above. */
+/** Jacobian determinant of court -> image at a court point. Negative = a real (non-mirrored) view from above. */
 function orientation(H: Mat3, p: Point): number {
   const e = 0.5;
   const o = applyHomography(H, p), ex = applyHomography(H, { x: p.x + e, y: p.y }), ey = applyHomography(H, { x: p.x, y: p.y + e });

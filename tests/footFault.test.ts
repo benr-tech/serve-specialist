@@ -40,7 +40,7 @@ describe('judgeFootFault', () => {
   });
 
   it('a toe that crosses the line IN THE AIR before contact is not a fault', () => {
-    // frontToeY −0.20 + 0.30 m of forward travel during leg drive → over the line, but airborne.
+    // frontToeY -0.20 + 0.30 m of forward travel during leg drive -> over the line, but airborne.
     const { result } = run({ frontToeY: -0.2 });
     expect(result.verdict).toBe('legal');
   });

@@ -33,7 +33,7 @@ const median = (xs: number[]) => {
 
 /**
  * Hampel filter over ±2 frames: a value is replaced by the local median only if it sits more than
- * 3 robust standard deviations (1.4826 × MAD) away from it. One-frame glitches get removed, while
+ * 3 robust standard deviations (1.4826 * MAD) away from it. One-frame glitches get removed, while
  * real peaks (which their neighbours lead up to) are left alone. Null stays null.
  */
 export function despike(values: Series): Series {
@@ -54,7 +54,7 @@ export function despike(values: Series): Series {
 /**
  * Smooths a series in two steps:
  * 1. `despike`: a 3-frame median removes single-frame glitches (e.g. a blurred wrist jumping away).
- * 2. A local polynomial fit (Savitzky–Golay style) over `window` frames: at each frame, fit a
+ * 2. A local polynomial fit (Savitzky-Golay style) over `window` frames: at each frame, fit a
  *    quadratic to the visible neighbours and take its value there. Unlike a moving average this
  *    keeps peaks at their true height and frame, which matters because contact, knee bend and most
  *    angles are read at peaks. With fewer than 5 points it fits a line (same as a moving average).
@@ -77,7 +77,7 @@ export function smooth(values: Series, window: number): Series {
 /** Least-squares polynomial of `degree` (1 or 2) through (d, y) points, evaluated at d = 0. */
 function fitAtZero(pts: [number, number][], degree: 1 | 2): number {
   if (pts.length === 1) return pts[0]![1];
-  // S[k] = Σ d^k, T[k] = Σ y·d^k
+  // S[k] = Σ d^k, T[k] = Σ y*d^k
   const S = [0, 0, 0, 0, 0];
   const T = [0, 0, 0];
   for (const [d, y] of pts) {
@@ -92,7 +92,7 @@ function fitAtZero(pts: [number, number][], degree: 1 | 2): number {
     const det = S[0]! * S[2]! - S[1]! * S[1]!;
     return Math.abs(det) < 1e-12 ? T[0]! / S[0]! : (T[0]! * S[2]! - S[1]! * T[1]!) / det;
   }
-  // Normal equations for y = a + b·d + c·d²; Cramer's rule for a.
+  // Normal equations for y = a + b*d + c*d²; Cramer's rule for a.
   const det3 = (m: number[][]) =>
     m[0]![0]! * (m[1]![1]! * m[2]![2]! - m[1]![2]! * m[2]![1]!) -
     m[0]![1]! * (m[1]![0]! * m[2]![2]! - m[1]![2]! * m[2]![0]!) +
@@ -115,7 +115,7 @@ export function smoothPoint(p: PointSeries, window: number): PointSeries {
   return { x: smooth(p.x, window), y: smooth(p.y, window) };
 }
 
-/** Smoothed keypoint series — what the analysis modules should normally use. */
+/** Smoothed keypoint series, what the analysis modules should normally use. */
 export function smoothedKeypoint(track: PoseTrack, name: KeypointName, window: number, minVisibility = 0.5): PointSeries {
   return smoothPoint(keypointSeries(track, name, minVisibility), window);
 }
@@ -149,7 +149,7 @@ export function frameTimes(track: PoseTrack): number[] {
   return track.frames.map((f) => f.timeMs);
 }
 
-/** Median distance (px) from shoulder midpoint to hip midpoint — the body-size unit for thresholds. */
+/** Median distance (px) from shoulder midpoint to hip midpoint, the body-size unit for thresholds. */
 export function torsoLengthPx(track: PoseTrack, minVisibility = 0.5): number | null {
   const lengths: number[] = [];
   for (const f of track.frames) {
@@ -168,7 +168,7 @@ export function torsoLengthPx(track: PoseTrack, minVisibility = 0.5): number | n
   return lengths[Math.floor(lengths.length / 2)]!;
 }
 
-/** Index of the smallest non-null value in values[from, to) — or null if none. */
+/** Index of the smallest non-null value in values[from, to), or null if none. */
 export function argMin(values: Series, from = 0, to = values.length): number | null {
   let best: number | null = null;
   for (let i = Math.max(0, from); i < Math.min(to, values.length); i++) {
@@ -178,7 +178,7 @@ export function argMin(values: Series, from = 0, to = values.length): number | n
   return best;
 }
 
-/** Index of the largest non-null value in values[from, to) — or null if none. */
+/** Index of the largest non-null value in values[from, to), or null if none. */
 export function argMax(values: Series, from = 0, to = values.length): number | null {
   return argMin(values.map((v) => (v === null ? null : -v)), from, to);
 }

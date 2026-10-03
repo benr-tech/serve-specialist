@@ -52,9 +52,9 @@ export interface MotionCheck {
 }
 
 export interface MotionResult {
-  /** 0–100 weighted checklist score, or null if too little could be measured. */
+  /** 0-100 weighted checklist score, or null if too little could be measured. */
   score: number | null;
-  /** Share of total check weight that could be measured (0–1). */
+  /** Share of total check weight that could be measured (0-1). */
   coverage: number;
   /** 'rough' when few checks could be measured, many were rough, or the footage is poor (set later). */
   confidence: 'normal' | 'rough';
@@ -70,7 +70,7 @@ export interface MotionInput {
   hand: Side;
   /** null when the foot-fault check wasn't run. */
   footFault: FootFaultResult | null;
-  /** image px → court metres; null when the court wasn't marked. */
+  /** image px -> court metres; null when the court wasn't marked. */
   imageToCourt: Mat3 | null;
   params: MotionParams;
   phaseParams: PhaseParams;
@@ -86,25 +86,25 @@ const len = (v: Vec) => Math.hypot(v.x, v.y, v.z);
 const scale = (v: Vec, k: number): Vec => ({ x: v.x * k, y: v.y * k, z: v.z * k });
 const DEG = 180 / Math.PI;
 
-/** Angle at b (degrees) between segments b→a and b→c. 180 = straight. */
+/** Angle at b (degrees) between segments b->a and b->c. 180 = straight. */
 export function jointAngle(a: Vec, b: Vec, c: Vec): number {
   const u = sub(a, b), v = sub(c, b);
   return Math.acos(Math.max(-1, Math.min(1, dot(u, v) / (len(u) * len(v))))) * DEG;
 }
 
-/** Elevation (degrees) of the segment from→to: +90 = straight up, 0 = level, −90 = straight down. y points down. */
+/** Elevation (degrees) of the segment from->to: +90 = straight up, 0 = level, -90 = straight down. y points down. */
 export function elevation(from: Vec, to: Vec): number {
   const d = sub(to, from);
   return Math.asin(Math.max(-1, Math.min(1, -d.y / len(d)))) * DEG;
 }
 
-/** Heading (degrees) of the segment from→to seen from above (the x–z plane). */
+/** Heading (degrees) of the segment from->to seen from above (the x-z plane). */
 export function yaw(from: Vec, to: Vec): number {
   const d = sub(to, from);
   return Math.atan2(d.z, d.x) * DEG;
 }
 
-/** Smallest absolute difference between two headings, 0–180°. */
+/** Smallest absolute difference between two headings, 0-180°. */
 export function headingDiff(a: number, b: number): number {
   const d = Math.abs((((a - b) % 360) + 540) % 360 - 180);
   return d;
@@ -167,7 +167,7 @@ const STATUS_VALUE: Record<Exclude<CheckStatus, 'unmeasured'>, number> = { good:
 
 /**
  * Weighted checklist score: good = 1, ok = ½, work on = 0, averaged by weight over the checks that
- * could be measured, × 100. No score if the measured checks cover less than `minCoverage` of the weight.
+ * could be measured, times 100. No score if the measured checks cover less than `minCoverage` of the weight.
  */
 export function scoreChecks(checks: Pick<MotionCheck, 'status' | 'weight'>[], minCoverage: number): { score: number | null; coverage: number } {
   const total = checks.reduce((a, c) => a + c.weight, 0);

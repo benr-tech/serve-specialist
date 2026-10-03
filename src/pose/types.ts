@@ -20,7 +20,7 @@ export type KeypointName = (typeof KEYPOINT_NAMES)[number];
 export interface Keypoint {
   x: number;
   y: number;
-  /** 0–1, how confident the model is that this point is visible. */
+  /** 0-1, how confident the model is that this point is visible. */
   visibility: number;
 }
 
@@ -67,7 +67,7 @@ export interface PoseBackend {
   readonly name: string;
   readonly version: string;
   init(): Promise<void>;
-  /** `source` is width×height pixels, upright. timeMs must strictly increase between calls. */
+  /** `source` is width x height pixels, upright. timeMs must strictly increase between calls. */
   detect(source: TexImageSource, width: number, height: number, timeMs: number): Detection | null;
   close(): void;
 }

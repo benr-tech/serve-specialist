@@ -2,13 +2,13 @@
  * Every tunable number in the analysis lives here. Bump `version` whenever a value changes,
  * so every exported result records exactly which settings produced it.
  * Speeds are in torso-lengths per second (camera-distance independent).
- * "TUNE": provisional, to be tuned on dev/train clips only — never on the test split.
+ * "TUNE": provisional; tune on training clips only, never on the test set.
  */
 export const PARAMS = {
   version: 'p0.10',
   /** Footage quality tips (analysis/footage.ts). */
   footage: {
-    /** Player (nose → lower ankle) should be at least this share of the frame height. */
+    /** Player (nose -> lower ankle) should be at least this share of the frame height. */
     minPlayerHeightFraction: 0.35,
     minShortSidePx: 720,
     minFps: 50,
@@ -17,22 +17,22 @@ export const PARAMS = {
     minArmVisibleShare: 0.6,
   },
   segments: {
-    /** A hard cut: whole-picture change (0–255, 48×27 grayscale) at least this big… */
+    /** A hard cut: whole-picture change (0-255, 48x27 grayscale) at least this big... */
     cutMinChange: 20,
-    /** …and this many times the surrounding frames' median (TUNE on dev clips). */
+    /** ...and this many times the surrounding frames' median (TUNE). */
     cutRatio: 4,
     /** Clips shorter than this are merged into the previous one. */
     minClipMs: 800,
-    /** Median half-second background drift above this = camera pans/zooms (TUNE: dev clips showed 3–5 still, 7–20 moving). */
+    /** Median half-second background drift above this = camera pans/zooms (TUNE: still cameras measure ~3-5, moving ones 7-20). */
     cameraMovingDrift: 8,
     /** The racket arm must be this many times faster than the other arm to be detected automatically. */
     hittingArmSpeedRatio: 1.5,
   },
   calibration: {
-    /** Above this fit error (needs ≥ 5 points) the court marking is rejected for foot-fault calls (TUNE). */
+    /** Above this fit error (needs >= 5 points) the court marking is rejected for foot-fault calls (TUNE). */
     maxResidualCm: 10,
   },
-  /** Centered moving-average window applied to keypoint positions (ms → odd frame count via smoothingFrames). */
+  /** Centered moving-average window applied to keypoint positions (ms -> odd frame count via smoothingFrames). */
   smoothingWindowMs: 80,
   phases: {
     /** Visibility cutoff for arm keypoints in phase detection. */
@@ -45,7 +45,7 @@ export const PARAMS = {
     startGapMs: 70,
     /**
      * Contact = the hitting wrist's highest point + this. On real footage the hand peaks just before
-     * the racket meets the ball (dev-v0: 2 serves at 60 fps, wrist peak 33–50 ms early). TUNE on more serves.
+     * the racket meets the ball (wrist peaks ~33-50 ms early at 60 fps). TUNE.
      */
     contactAfterWristPeakMs: 40,
     /** Trophy = deepest knee bend after release, if it's at least this much deeper than at release (TUNE). */
@@ -54,13 +54,13 @@ export const PARAMS = {
     trophyBeforePushOffMs: 50,
     /** Racket drop only counts while the hitting elbow is no more than this far below the shoulder (torso lengths, TUNE). */
     elbowUpTolerance: 0.15,
-    /** When the racket arm can't be seen behind the back: drop ≈ this long before contact (dev labels: 80–130 ms). */
+    /** When the racket arm can't be seen behind the back: drop ~ this long before contact (typically 80-130 ms). */
     racketDropBeforeContactMs: 115,
     /** Landing: look for the hips' fastest fall within this long after contact. */
     landingSearchMs: 600,
     /** ...which must be at least this fast, or there was no jump (torso lengths/s, TUNE). */
     landingMinHipDropSpeed: 1.0,
-    /** First touch comes this long before the hips' fastest fall (dev labels: 5 serves, 40–100 ms; TUNE). */
+    /** First touch comes this long before the hips' fastest fall (typically 40-100 ms; TUNE). */
     landingHipLagMs: 50,
     /** Per-foot landing (which foot lands first): foot speed below this counts as stationary (TUNE). */
     landingStillSpeed: 0.8,
@@ -78,7 +78,7 @@ export const PARAMS = {
     groundedPadMs: 40,
     /** A fault needs this many ms of consecutive grounded frames past the line. */
     faultMinMs: 50,
-    /** Fewer grounded, visible ms than this in the window → "can't tell". */
+    /** Fewer grounded, visible ms than this in the window -> "can't tell". */
     minGroundedMs: 200,
     /** Assumed calibration click error (px). */
     clickErrorPx: 3,
@@ -87,7 +87,7 @@ export const PARAMS = {
     /** A planted foot further inside the court than this before contact isn't a plausible serve stance:
      *  the court marking (or the tracked person) is almost certainly wrong, so no call is made. */
     implausibleOverCm: 50,
-    /** Toe keypoint → shoe tip correction (m, +y). 0 until fitted on labeled serves. */
+    /** Toe keypoint -> shoe tip correction (m, +y). 0 until fitted on labeled serves. */
     shoeTipOffsetM: 0,
   },
   /**
@@ -101,7 +101,7 @@ export const PARAMS = {
     /** Measurements using any joint below this visibility are marked "rough". */
     confidentVisibility: 0.5,
     // Legs & power
-    /** Deepest knee flexion (180 − hip-knee-ankle angle) before contact (TUNE). */
+    /** Deepest knee flexion (180 - hip-knee-ankle angle) before contact (TUNE). */
     kneeFlexionDeg: { good: 40, ok: 25 },
     /** Peak knee extension speed between the deepest bend and contact (TUNE). */
     legDriveDegPerS: { good: 450, ok: 250 },
@@ -123,7 +123,7 @@ export const PARAMS = {
     racketDropElbowDeg: { good: 110, ok: 135 },
     /** Hitting elbow angle at contact; 180 = straight (TUNE). */
     contactElbowAngleDeg: { good: 160, ok: 145 },
-    /** (lower ankle → wrist at contact) ÷ (lower ankle → nose at toss start), each in that frame's torso lengths (TUNE). */
+    /** (lower ankle -> wrist at contact) / (lower ankle -> nose at toss start), each in that frame's torso lengths (TUNE). */
     contactHeightRatio: { good: 1.3, ok: 1.18 },
     pronation: {
       /** Net forearm rotation over the window (TUNE). */
@@ -142,9 +142,9 @@ export const PARAMS = {
       trophy_elbow: 1.5, toss_arm: 1, racket_drop: 1.5, contact_extension: 2, contact_height: 1.5, pronation: 1.5,
       foot_fault: 1,
     },
-    /** A score is given once this share of the total weight could be measured… */
+    /** A score is given once this share of the total weight could be measured... */
     minCoverage: 0.25,
-    /** …but below this share it's marked "rough". */
+    /** ...but below this share it's marked "rough". */
     confidentCoverage: 0.6,
   },
 } as const;

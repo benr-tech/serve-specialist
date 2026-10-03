@@ -1,6 +1,6 @@
 /**
  * Phase-timing check against by-eye labels (experiments/2026-10-03_phase-labels_dev-v2.json).
- * Prints detected − labeled time per event and the mean absolute error. Dev-only; reads the
+ * Prints detected - labeled time per event and the mean absolute error. Dev-only; reads the
  * git-ignored tracks in samples/tracks.
  *   npx vitest run --config devtools/vitest.config.ts devtools/phases.dev.ts
  */

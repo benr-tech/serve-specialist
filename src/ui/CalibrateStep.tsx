@@ -17,7 +17,7 @@ const LOUPE_ZOOM = 4;
 export type CameraView = 'behind' | 'front';
 
 /**
- * Plain-language names for each point, phrased to finish "Click where…". Left/right are as seen
+ * Plain-language names for each point, phrased to finish "Click where...". Left/right are as seen
  * in the video: from behind the server that's the server's own left/right; from in front it's
  * mirrored.
  */
@@ -81,7 +81,7 @@ export function CalibrateStep({
     setClicks([...clicks, { id: next, image: eventToVideoPx(e, canvas.current) }]);
   };
 
-  // Magnifier: shows the video around the cursor at LOUPE_ZOOM× so clicks land on the line itself.
+  // Magnifier: shows the video around the cursor at LOUPE_ZOOMx so clicks land on the line itself.
   const loupe = useRef<HTMLCanvasElement>(null);
   const [loupeAt, setLoupeAt] = useState<{ left: number; top: number } | null>(null);
   const onMove = (e: React.MouseEvent<HTMLCanvasElement>) => {

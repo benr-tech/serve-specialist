@@ -2,9 +2,9 @@
  * Left/right label repair.
  *
  * Pose models sometimes swap left and right labels for a stretch of frames, especially when the
- * player is filmed from behind. On real footage (2026-10-02) the *upper body* (shoulders, elbows,
- * wrists) swapped at 1.25 s while the legs did not, and the swap went through a "merged" frame
- * where both arms were drawn almost on top of each other.
+ * player is filmed from behind. Often only the upper body (shoulders, elbows, wrists) swaps while
+ * the legs don't, and the swap passes through a "merged" frame where both arms sit almost on top
+ * of each other.
  *
  * Body parts don't teleport, so for the upper and lower body separately we compare each frame with
  * the last frame where that half was clearly separated left-vs-right, and trade the labels back if
@@ -27,9 +27,9 @@ const LOWER_SEP: Pair[] = [['leftKnee', 'rightKnee'], ['leftAnkle', 'rightAnkle'
 
 /** Swap only if it explains the motion this much better (cost ratio). */
 const SWAP_RATIO = 0.6;
-/** A half counts as clearly separated if its left/right points are this far apart (× torso length). */
+/** A half counts as clearly separated if its left/right points are this far apart (torso lengths). */
 const MIN_SEPARATION = 0.35;
-/** Arms closer than this (× torso) in a frame between clearly separated frames = a merged, unreliable frame. */
+/** Arms closer than this (torso lengths) in a frame between clearly separated frames = a merged, unreliable frame. */
 const MERGED = 0.12;
 const MIN_VIS = 0.3;
 

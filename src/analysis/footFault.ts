@@ -38,7 +38,7 @@ export interface FootFaultResult {
 
 export interface FootFaultInput {
   track: PoseTrack;
-  /** image px → court metres */
+  /** image px -> court metres */
   imageToCourt: Mat3;
   /** Window is [startFrame, contactFrame). */
   startFrame: number;

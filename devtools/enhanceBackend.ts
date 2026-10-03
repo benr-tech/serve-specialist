@@ -22,7 +22,7 @@ export interface EnhanceOptions {
 export const mirrorName = (n: KeypointName): KeypointName =>
   (n.startsWith('left') ? n.replace('left', 'right') : n.startsWith('right') ? n.replace('right', 'left') : n) as KeypointName;
 
-/** Brightness stretch from a small grayscale sample: maps the 1st–99th percentile to the full range. */
+/** Brightness stretch from a small grayscale sample: maps the 1st-99th percentile to the full range. */
 export function levelsFor(gray: Uint8ClampedArray | number[]): { lo: number; gain: number } | null {
   const hist = new Array<number>(256).fill(0);
   for (const g of gray) hist[g]!++;

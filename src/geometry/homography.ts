@@ -1,17 +1,17 @@
 /**
- * Homography: the 3×3 transform that maps points on one flat plane to another
- * (here: video pixels ⇄ court metres). Tests: tests/homography.test.ts
+ * Homography: the 3x3 transform that maps points on one flat plane to another
+ * (here: video pixels <-> court metres). Tests: tests/homography.test.ts
  */
 import type { Mat3, Point } from './types';
 
-/** Area (×2) of triangle abc; 0 when the three points are on one line. */
+/** Area (x2) of triangle abc; 0 when the three points are on one line. */
 function cross(a: Point, b: Point, c: Point): number {
   return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 }
 
 /**
  * Hartley normalization: move the points so their average is (0, 0) and their average
- * distance from it is √2. Keeps the numbers in the linear solve close to 1, which makes it
+ * distance from it is sqrt(2). Keeps the numbers in the linear solve close to 1, which makes it
  * far more accurate than working with raw pixel values in the hundreds.
  */
 function normalize(pts: Point[]): { T: Mat3; pts: Point[] } {
@@ -33,7 +33,7 @@ function multiply(a: Mat3, b: Mat3): Mat3 {
   return r as Mat3;
 }
 
-/** Solve A·x = b (A square) by Gauss–Jordan elimination with partial pivoting. */
+/** Solve A*x = b (A square) by Gauss-Jordan elimination with partial pivoting. */
 function solveLinear(A: number[][], b: number[]): number[] {
   const n = b.length;
   const M = A.map((row, i) => [...row, b[i]!]);
@@ -52,7 +52,7 @@ function solveLinear(A: number[][], b: number[]): number[] {
 }
 
 /**
- * Find H such that applyHomography(H, src[i]) ≈ dst[i].
+ * Find H such that applyHomography(H, src[i]) ~ dst[i].
  * Exactly 4 points: exact fit. More than 4: least-squares fit.
  * Throws if fewer than 4 points, lengths differ, or 3 of 4 points lie on one line.
  */
@@ -63,7 +63,7 @@ export function solveHomography(src: Point[], dst: Point[]): Mat3 {
   const ns = normalize(src);
   const nd = normalize(dst);
 
-  // With exactly 4 points, three on a line makes the problem unsolvable — but the linear solve
+  // With exactly 4 points, three on a line makes the problem unsolvable, but the linear solve
   // can still "succeed" and return a broken matrix, so check explicitly.
   if (src.length === 4) {
     for (const pts of [ns.pts, nd.pts]) {
@@ -75,7 +75,7 @@ export function solveHomography(src: Point[], dst: Point[]): Mat3 {
   }
 
   // Each pair gives two equations in the 8 unknowns h11..h32 (h33 fixed at 1):
-  //   x' = (h11 x + h12 y + h13) / (h31 x + h32 y + 1)  →  h11 x + h12 y + h13 − h31 x x' − h32 y x' = x'
+  //   x' = (h11 x + h12 y + h13) / (h31 x + h32 y + 1)  ->  h11 x + h12 y + h13 - h31 x x' - h32 y x' = x'
   const rows: number[][] = [];
   const rhs: number[] = [];
   ns.pts.forEach((s, i) => {
@@ -85,12 +85,12 @@ export function solveHomography(src: Point[], dst: Point[]): Mat3 {
     rows.push([0, 0, 0, s.x, s.y, 1, -s.x * d.y, -s.y * d.y]);
     rhs.push(d.y);
   });
-  // Least squares via the normal equations (AᵀA)h = Aᵀb. With 4 points this is the exact solution.
+  // Least squares via the normal equations (A^T A)h = A^T b. With 4 points this is the exact solution.
   const AtA = Array.from({ length: 8 }, (_, i) => Array.from({ length: 8 }, (_, j) => rows.reduce((a, r) => a + r[i]! * r[j]!, 0)));
   const Atb = Array.from({ length: 8 }, (_, i) => rows.reduce((a, r, k) => a + r[i]! * rhs[k]!, 0));
   const h = solveLinear(AtA, Atb);
 
-  // Undo the normalization: H = T_dst⁻¹ · H_normalized · T_src
+  // Undo the normalization: H = T_dst^-1 * H_normalized * T_src
   const H = multiply(invertHomography(nd.T), multiply([...h, 1] as Mat3, ns.T));
   return H.map((v) => v / H[8]) as Mat3;
 }
@@ -101,7 +101,7 @@ export function applyHomography(H: Mat3, p: Point): Point {
   return { x: (H[0] * p.x + H[1] * p.y + H[2]) / w, y: (H[3] * p.x + H[4] * p.y + H[5]) / w };
 }
 
-/** Inverse transform (court → image if H is image → court). Throws if H is singular. */
+/** Inverse transform (court -> image if H is image -> court). Throws if H is singular. */
 export function invertHomography(H: Mat3): Mat3 {
   const [a, b, c, d, e, f, g, h, i] = H;
   const A = e * i - f * h;
@@ -118,7 +118,7 @@ export function invertHomography(H: Mat3): Mat3 {
 
 /**
  * How far (cm on the court) a mistake of `errorPx` pixels at image point `p` can move its
- * court position: the largest displacement over 8 compass directions. H maps image px → court
+ * court position: the largest displacement over 8 compass directions. H maps image px -> court
  * metres. Feeds the foot-fault uncertainty band: far-away feet get wider bands.
  */
 export function pixelErrorToCourtCm(H: Mat3, p: Point, errorPx: number): number {

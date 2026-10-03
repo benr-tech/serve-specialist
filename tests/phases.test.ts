@@ -11,7 +11,7 @@ const run = (opts: SyntheticOptions, hand = opts.hand ?? 'right') => {
 };
 
 /**
- * Allowed error in frames: ±2 at 60 fps (≈33 ms); landing gets ±3. Start is the *visible* start
+ * Allowed error in frames: ±2 at 60 fps (~33 ms); landing gets ±3. Start is the *visible* start
  * (arms clearly moving), which on this fixture's eased keyframes is ~70 ms after the keyframe.
  */
 const TOL_60 = { start: 5, trophy: 2, racketDrop: 2, contact: 2, landing: 3 };
@@ -83,7 +83,7 @@ describe('findStart', () => {
   const times = Array.from({ length: 90 }, (_, i) => (i * 1000) / 30);
   const p = PARAMS.phases;
   it('skips the pre-serve ball bounces and the ready pause', () => {
-    // Bounces 0–1 s (arm moving), ready pause 1–2 s, motion from 2.0 s, release at 2.8 s.
+    // Bounces 0-1 s (arm moving), ready pause 1-2 s, motion from 2.0 s, release at 2.8 s.
     const toss = times.map((t) => (t < 1000 ? 3 + 2 * Math.sin(t / 50) : t < 2000 ? 0.4 : t < 2700 ? 6 : 1));
     const hit = times.map((t) => (t < 1000 ? 2.5 : t < 2000 ? 0.3 : 3));
     expect(findStart(toss, hit, times, 84, p)).toBe(60);

@@ -7,7 +7,7 @@ import type { RgbaImage } from '../court/detect';
 export interface Still {
   timeMs: number;
   image: RgbaImage;
-  /** still px = video px × scale */
+  /** still px = video px x scale */
   scale: number;
 }
 

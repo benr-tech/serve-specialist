@@ -78,7 +78,6 @@ export interface ClipAnalysis {
   report: ServeReport;
 }
 
-/** Court calibration for one clip: only valid if it was marked on this clip and the camera holds still. */
 /** Where the player's feet are near the start of a clip (lower ankle, median over ~0.5 s), in video px. */
 function feetNearStart(track: PoseTrack): { x: number; y: number } | null {
   const t0 = track.frames[0]?.timeMs ?? 0;
@@ -113,6 +112,7 @@ function autoCalibration(clipTrack: PoseTrack, stills: Still[], t0: number, t1: 
   return cal;
 }
 
+/** Court calibration for one clip: marked by hand on this clip, else found automatically; none if the camera moves. */
 function clipCalibration(raw: PoseTrack, clipTrack: PoseTrack, seg: Segment, ctx: AnalysisContext): Outcome<Calibration> {
   const t0 = raw.frames[seg.start]!.timeMs, t1 = raw.frames[seg.end - 1]!.timeMs;
   if (seg.cameraMoving) {

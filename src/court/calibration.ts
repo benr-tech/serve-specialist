@@ -9,13 +9,13 @@ export interface CalibrationClick {
 
 export interface Calibration {
   clicks: CalibrationClick[];
-  /** image px → court metres */
+  /** image px -> court metres */
   imageToCourt: Mat3;
   /** RMS distance (cm) between clicked and fitted landmark positions. Only meaningful with > 4 points. */
   residualCm: number | null;
   /** 'auto' = found by court detection; 'manual' = clicked by the user. */
   source?: 'manual' | 'auto';
-  /** For auto: share of the visible court lines that matched line pixels (0–1). */
+  /** For auto: share of the visible court lines that matched line pixels (0-1). */
   autoHitRatio?: number;
 }
 

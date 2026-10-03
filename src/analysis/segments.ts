@@ -112,7 +112,7 @@ export function detectHittingSide(
     return best === null ? null : { t: times[best]!, h: bestH };
   };
   const L = peakTime('left'), R = peakTime('right');
-  // Both hands must clearly get above the head (≥ 1.3 torso lengths over the hips) for the order to mean anything.
+  // Both hands must clearly get above the head (>= 1.3 torso lengths over the hips) for the order to mean anything.
   if (L && R && L.h > 1.3 && R.h > 1.3 && Math.abs(L.t - R.t) >= 150) {
     return { side: L.t > R.t ? 'left' : 'right', method: 'peak_order', detail: Math.abs(L.t - R.t) };
   }

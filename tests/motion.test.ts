@@ -128,7 +128,7 @@ describe('rateServe: legs & power', () => {
   });
 
   it('driving into the court: measures landing distance inside the baseline', () => {
-    const { input } = setup({ frontToeY: -0.2 }); // lands 0.6 m further forward → ~40 cm inside
+    const { input } = setup({ frontToeY: -0.2 }); // lands 0.6 m further forward -> ~40 cm inside
     const c = check(rateServe(input), 'court_drive');
     expect(c.status).toBe('good');
     expect(c.value).toBeGreaterThan(30);
@@ -192,11 +192,11 @@ describe('rateServe: arm & contact', () => {
   it('contact height (image, torso-scaled): full stretch vs. a low contact; uses the lower ankle', () => {
     const { s, input } = setup();
     const body: Partial<Record<KeypointName, [number, number]>> = { leftShoulder: [675, 330], rightShoulder: [725, 330], leftHip: [682, 440], rightHip: [718, 440] }; // torso 110 px
-    setPose(s.track, s.truth.start, { ...body, nose: [700, 250], leftAnkle: [690, 650], rightAnkle: [710, 650] }); // 400 px ankle→nose
+    setPose(s.track, s.truth.start, { ...body, nose: [700, 250], leftAnkle: [690, 650], rightAnkle: [710, 650] }); // 400 px ankle->nose
     // Back foot kicked up to y=560 must not shrink the reach: the lower ankle (650) is used.
-    setPose(s.track, s.truth.contact, { ...body, leftAnkle: [690, 650], rightAnkle: [740, 560], rightWrist: [720, 90] }); // 560 px → 1.4×
+    setPose(s.track, s.truth.contact, { ...body, leftAnkle: [690, 650], rightAnkle: [740, 560], rightWrist: [720, 90] }); // 560 px -> 1.4x
     expect(check(rateServe(input), 'contact_height').status).toBe('good');
-    setPose(s.track, s.truth.contact, { ...body, leftAnkle: [690, 650], rightAnkle: [740, 560], rightWrist: [720, 250] }); // 400 px → 1.0×
+    setPose(s.track, s.truth.contact, { ...body, leftAnkle: [690, 650], rightAnkle: [740, 560], rightWrist: [720, 250] }); // 400 px -> 1.0x
     expect(check(rateServe(input), 'contact_height').status).toBe('work_on');
   });
 

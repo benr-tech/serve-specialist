@@ -2,8 +2,8 @@
  * Cheap per-frame change measurements, used to find hard cuts (compilation videos) and to tell
  * whether the camera is moving (pan/zoom), which makes court calibration invalid.
  *
- * Each frame is shrunk to 48×27 grayscale and compared with the previous frame:
- * - `full`: mean absolute change over the whole frame (0–255). A cut makes this spike.
+ * Each frame is shrunk to 48x27 grayscale and compared with the previous frame:
+ * - `full`: mean absolute change over the whole frame (0-255). A cut makes this spike.
  * - `background`: the same, but ignoring a box around the player.
  * - `drift`: background change compared with the frame ~0.5 s earlier (player boxes from both
  *   frames masked). A fixed camera stays near the noise floor; a slow pan or zoom that barely shows

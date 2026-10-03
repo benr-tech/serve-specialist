@@ -12,7 +12,7 @@ export interface FootageQuality {
   fps: number;
   width: number;
   height: number;
-  /** Share of frames around the swing where the hitting wrist is clearly visible (0–1). */
+  /** Share of frames around the swing where the hitting wrist is clearly visible (0-1). */
   hittingArmVisible: number | null;
   /** One short, actionable tip per problem; empty when the footage is good. */
   tips: string[];

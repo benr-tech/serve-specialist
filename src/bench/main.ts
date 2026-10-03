@@ -1,7 +1,7 @@
 /**
  * Pose-backend runtime benchmark.
  * Measures, per backend on one clip: pose ms/frame (median and p90), total wall time, and the
- * fraction of frames with a detected person. Speed only — this says nothing about accuracy.
+ * fraction of frames with a detected person. Speed only, this says nothing about accuracy.
  */
 import { MediaPipeBackend, type MediaPipeVariant } from '../pose/mediapipe';
 import type { Detection, PoseBackend } from '../pose/types';

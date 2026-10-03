@@ -32,11 +32,11 @@ function seekTo(video: HTMLVideoElement, t: number): Promise<number | null> {
 }
 
 /**
- * FALLBACK ONLY — used when WebCodecs can't decode the file (see decodeFrames.ts).
+ * FALLBACK ONLY, used when WebCodecs can't decode the file (see decodeFrames.ts).
  * Browsers don't reliably report which frame a seek landed on, so this can skip frames.
  *
  * Runs the pose backend once on every frame of `video`, recording each frame's real
- * presentation time (DECISIONS.md D-007).
+ * presentation time.
  *
  * We step through the video by seeking. The frame interval is learned as we go
  * (smallest gap seen between two frames) so we land on each frame once even when

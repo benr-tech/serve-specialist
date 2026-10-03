@@ -3,7 +3,7 @@
  *
  * - A simulated pinhole camera stands behind the baseline (rear-oblique, like DATA.md).
  * - Feet are real 3D points projected through that camera, so a foot lifted off the ground
- *   lands in the "wrong" place when mapped through the ground homography — exactly the
+ *   lands in the "wrong" place when mapped through the ground homography, exactly the
  *   trap the foot-fault rule must avoid.
  * - Arms follow keyframed image-space trajectories with known event times.
  * - Every coordinate gets ±0.8 px deterministic jitter, like a real pose model.
@@ -93,7 +93,7 @@ export function makeCamera(cameraY = -4.5, opts: { x?: number; z?: number; targe
     const z = dot(fwd, d);
     return { x: (f * dot(right, d)) / z + cx, y: (f * dot(down, d)) / z + cy };
   };
-  // Ground plane (z = 0): image ~ K · [r1 r2 −R·C] · [x y 1]
+  // Ground plane (z = 0): image ~ K * [r1 r2 -R*C] * [x y 1]
   const rows = [right, down, fwd];
   const t = rows.map((r) => -dot(r, C));
   const M = rows.map((r, k) => [r[0], r[1], t[k]!]);

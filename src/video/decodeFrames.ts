@@ -1,9 +1,9 @@
 /**
- * Frame-exact decoding with WebCodecs (DECISIONS.md D-008).
+ * Frame-exact decoding with WebCodecs.
  *
  * mp4box reads the MP4/MOV container and hands us every compressed frame with its exact
  * timestamp; the browser's hardware VideoDecoder turns each one into an image. Every frame is
- * seen exactly once, with the timestamp the phone wrote into the file — no seeking.
+ * seen exactly once, with the timestamp the phone wrote into the file, no seeking.
  */
 import { createFile, DataStream, Endianness, MP4BoxBuffer, type Sample, type Track } from 'mp4box';
 import type { PoseBackend, PoseFrame, PoseTrack } from '../pose/types';
@@ -90,7 +90,7 @@ async function demux(file: File): Promise<Demuxed> {
   };
 }
 
-/** True if this browser can decode the file frame-exactly. False → use the seek-based fallback. */
+/** True if this browser can decode the file frame-exactly. False -> use the seek-based fallback. */
 export async function canDecode(file: File): Promise<boolean> {
   if (typeof VideoDecoder === 'undefined') return false;
   try {
@@ -117,7 +117,7 @@ export async function decodePoseTrack(file: File, backend: PoseBackend, { onProg
   const decoder = new VideoDecoder({
     output: (vf) => {
       try {
-        const timeMs = vf.timestamp / 1000; // µs → ms (we set these from the container below)
+        const timeMs = vf.timestamp / 1000; // us -> ms (we set these from the container below)
         if (timeMs < d.startS * 1000 || timeMs <= lastMs) return; // pre-roll or duplicate
         lastMs = timeMs;
         // Draw upright, so keypoints match what the <video> element displays.

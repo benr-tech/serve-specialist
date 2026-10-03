@@ -13,7 +13,7 @@ export interface RgbaImage {
   data: Uint8ClampedArray | Uint8Array;
 }
 
-/** A line a·x + b·y + c = 0 with a² + b² = 1, plus how many line pixels support it. */
+/** A line a*x + b*y + c = 0 with a² + b² = 1, plus how many line pixels support it. */
 export interface ImageLine {
   a: number;
   b: number;
@@ -28,11 +28,11 @@ export interface LineMaskParams {
   lumCeil: number;
   /** Line pixels must be this much brighter than their neighbours τ away. */
   contrast: number;
-  /** Max (max channel − min channel) for "white". */
+  /** Max (max channel - min channel) for "white". */
   maxSaturation: number;
   /** Neighbour distances (px) to test, covering thin far lines to wide near ones. */
   taus: number[];
-  /** Local edge coherence (0–1) a line pixel needs: painted lines have edges all running one way, foliage doesn't. */
+  /** Local edge coherence (0-1) a line pixel needs: painted lines have edges all running one way, foliage doesn't. */
   minCoherence: number;
   /** Window radius (px) for the coherence measure. */
   coherenceRadius: number;
@@ -232,7 +232,7 @@ export function houghLines(mask: Uint8Array, w: number, h: number, p: HoughParam
     if (n === 0) strongest = bestV;
     if (bestV * stride < p.minVotes || bestV < p.minVotesFrac * strongest) break;
     const t = (best / nRho) | 0, r = (best % nRho) - diag;
-    // Suppress the neighbourhood (θ wraps at 180° with ρ → −ρ).
+    // Suppress the neighbourhood (θ wraps at 180° with ρ -> -ρ).
     for (let dt = -supT; dt <= supT; dt++) {
       let tt = t + dt, sign = 1;
       if (tt < 0) { tt += nTheta; sign = -1; } else if (tt >= nTheta) { tt -= nTheta; sign = -1; }

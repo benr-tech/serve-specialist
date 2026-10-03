@@ -26,7 +26,7 @@ export interface PhaseInput {
   contactFrame?: number | null;
 }
 
-/** Per frame: deepest knee flexion of either leg (180° − hip-knee-ankle angle), from the 3D pose if present. */
+/** Per frame: deepest knee flexion of either leg (180° - hip-knee-ankle angle), from the 3D pose if present. */
 function kneeFlexion(track: PoseTrack, w: number): Series {
   const raw: Series = track.frames.map((f) => {
     const src = f.world ?? f.pose;
@@ -174,7 +174,7 @@ export function detectPhases({ track, hand, params, smoothingWindow: w, contactF
   if (contact === null) {
     warnings.push('contact not detected: hitting arm not visible');
   } else {
-    // Ball release ≈ the toss hand at its highest before contact.
+    // Ball release ~ the toss hand at its highest before contact.
     const release = argMin(tossWrist.y, 0, contact);
     if (release === null) {
       warnings.push('trophy not detected: tossing arm not visible before contact');
@@ -192,7 +192,7 @@ export function detectPhases({ track, hand, params, smoothingWindow: w, contactF
           ? deepest
           : release;
       events.start = findStart(armSpeed(`${toss}Wrist`), armSpeed(`${hand}Wrist`), times, release, params);
-      // Racket drop: elbow up, hand dropped behind the back → wrist furthest below the elbow, counted
+      // Racket drop: elbow up, hand dropped behind the back -> wrist furthest below the elbow, counted
       // only while the elbow is up near shoulder height (a hand just hanging low doesn't count).
       const hitShoulder = rel(`${hand}Shoulder`);
       const wristBelowElbow: Series = hitWrist.y.map((y, i) => (y === null || hitElbow.y[i] === null ? null : y - hitElbow.y[i]!));
