@@ -41,9 +41,10 @@ export default defineConfig({
   // Relative asset paths, so the same build works at a site root (Netlify) or a sub-path (GitHub Pages).
   base: './',
   plugins: [react(), tailwindcss(), saveTracks()],
+  // Only the app is built for the public site; bench.html (model speed test) is dev-server only.
   build: {
     rollupOptions: {
-      input: { main: 'index.html', bench: 'bench.html' },
+      input: { main: 'index.html' },
     },
   },
   resolve: {

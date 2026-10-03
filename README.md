@@ -16,7 +16,7 @@ npm run build   # → dist/  (a static site: upload it anywhere)
 ## Hosting
 It's a static site: the browser does all the work, there's no server, and videos never leave the viewer's device. `.github/workflows/deploy.yml` runs the tests, builds, and publishes to GitHub Pages on every push to `main`. The `dist` folder also works on any static host (`netlify.toml` included).
 
-The pose model (~30 MB) downloads from Google's model storage on first use; the WASM runtime is served by the site itself.
+The pose model (`public/models`, ~30 MB, MediaPipe Pose Landmarker heavy, Apache 2.0) and the WASM runtime are served by the site itself, so nothing is fetched from anywhere else.
 
 | Doc | What it is |
 |---|---|
@@ -24,4 +24,4 @@ The pose model (~30 MB) downloads from Google's model storage on first use; the 
 | [DATA.md](DATA.md) | How to film serves |
 | [experiments/](experiments/README.md) | Every measured number, with script + dataset version |
 
-Developer benchmark: `npm run dev`, then open `/bench.html`.
+Developer benchmark (dev server only, not in the public build): `npm run dev`, then open `/bench.html`.

@@ -4,8 +4,12 @@ import type { Detection, KeypointName, Pose, PoseBackend, WorldPose } from './ty
 export type MediaPipeVariant = 'lite' | 'full' | 'heavy';
 
 const MODEL_VERSION = '1';
-const modelUrl = (v: MediaPipeVariant) =>
+const googleUrl = (v: MediaPipeVariant) =>
   `https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_${v}/float16/${MODEL_VERSION}/pose_landmarker_${v}.task`;
+/** The app's own model is served with the site (public/models), so it keeps working if Google moves the file. */
+const SELF_HOSTED: Partial<Record<MediaPipeVariant, string>> = { heavy: 'models/pose_landmarker_heavy.task' };
+const modelUrls = (v: MediaPipeVariant) =>
+  SELF_HOSTED[v] ? [`${import.meta.env.BASE_URL}${SELF_HOSTED[v]}`, googleUrl(v)] : [googleUrl(v)];
 
 /** MediaPipe BlazePose landmark index for each of our keypoints. */
 const INDEX: Record<KeypointName, number> = {
@@ -33,17 +37,25 @@ export class MediaPipeBackend implements PoseBackend {
 
   async init(): Promise<void> {
     const fileset = await FilesetResolver.forVisionTasks(`${import.meta.env.BASE_URL}mediapipe-wasm`);
-    const create = (delegate: 'GPU' | 'CPU') =>
+    const create = (modelAssetPath: string, delegate: 'GPU' | 'CPU') =>
       PoseLandmarker.createFromOptions(fileset, {
-        baseOptions: { modelAssetPath: modelUrl(this.variant), delegate },
+        baseOptions: { modelAssetPath, delegate },
         runningMode: 'VIDEO',
         numPoses: 1,
       });
-    try {
-      this.landmarker = await create('GPU');
-    } catch {
-      this.landmarker = await create('CPU');
+    // Own copy first, Google's as a fallback; GPU if the device allows, else CPU.
+    let lastError: unknown;
+    for (const url of modelUrls(this.variant)) {
+      for (const delegate of ['GPU', 'CPU'] as const) {
+        try {
+          this.landmarker = await create(url, delegate);
+          return;
+        } catch (e) {
+          lastError = e;
+        }
+      }
     }
+    throw lastError;
   }
 
   detect(source: TexImageSource, w: number, h: number, timeMs: number): Detection | null {
