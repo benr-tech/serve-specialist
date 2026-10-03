@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serve Specialist · pose benchmark</title>
+    <style>
+      body { font: 15px/1.5 ui-monospace, Menlo, monospace; margin: 24px; background: #f4f1ea; color: #1a1d19; }
+      pre { background: #fff; padding: 16px; border-radius: 8px; overflow: auto; }
+    </style>
+  </head>
+  <body>
+    <h1>Pose backend runtime benchmark</h1>
+    <p>Developer tool. Runs every pose model on one clip and prints timing as JSON. Save the output under <code>experiments/</code>.</p>
+    <input type="file" accept="video/*" id="file" />
+    <pre id="out">Choose a clip.</pre>
+    <script type="module" src="/src/bench/main.ts"></script>
+  </body>
+</html>

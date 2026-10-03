@@ -1,0 +1,50 @@
+{
+  "experiment": "pose-runtime",
+  "date": "2026-10-03T00:34:38.986Z",
+  "appVersion": "0.1.0",
+  "script": "bench.html \u2192 src/bench/main.ts (commit: see git log for this file)",
+  "dataset": "smoke-v0",
+  "clip": {
+    "name": "smoke.mp4",
+    "bytes": 3511706,
+    "sha256": "ac551304e098b28fa77f8de14f5e6860b7a2b9f14340266b2c10e2dc9ceadd86"
+  },
+  "machine": "Intel Mac test machine (macOS, 11 logical cores), Chromium 152 browser",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.130 Safari/537.36",
+  "hardwareConcurrency": 11,
+  "results": [
+    {
+      "backend": "mediapipe-pose-lite",
+      "version": "tasks-vision@1.0.1/model-v1",
+      "frames": 192,
+      "detectedFraction": 1,
+      "poseMsPerFrame": {
+        "median": 5.4,
+        "p90": 5.9
+      },
+      "wallMs": 1408
+    },
+    {
+      "backend": "mediapipe-pose-full",
+      "version": "tasks-vision@1.0.1/model-v1",
+      "frames": 192,
+      "detectedFraction": 1,
+      "poseMsPerFrame": {
+        "median": 6.6,
+        "p90": 7
+      },
+      "wallMs": 1569
+    },
+    {
+      "backend": "mediapipe-pose-heavy",
+      "version": "tasks-vision@1.0.1/model-v1",
+      "frames": 192,
+      "detectedFraction": 1,
+      "poseMsPerFrame": {
+        "median": 17,
+        "p90": 17.2
+      },
+      "wallMs": 3572
+    }
+  ]
+}

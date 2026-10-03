@@ -1,0 +1,10 @@
+{
+  "about": "By-eye phase times (s) from frame-by-frame contact sheets (devtools/sheet.ts). start = first frame of the continuous service motion after the ready pause; trophy = toss arm up, racket arm cocked, knees most bent, feet still down; racketDrop = racket lowest behind the back; contact = racket meets ball; landing = first foot touches down. Precision about ±1 frame, ±2 frames for start and trophy.",
+  "serves": [
+    { "file": "2026-07-21_filtered-shots", "start": 1.00, "trophy": 2.40, "racketDrop": 2.65, "contact": 2.77, "landing": 2.82 },
+    { "file": "2026-07-21_filtered-shots", "start": 5.00, "trophy": 6.08, "racketDrop": 6.40, "contact": 6.53, "landing": 6.60 },
+    { "file": "2026-10-03_a", "start": 4.27, "trophy": 4.97, "racketDrop": 5.17, "contact": 5.30, "landing": 5.50 },
+    { "file": "2026-10-03_b", "start": 4.98, "trophy": 5.70, "racketDrop": 6.03, "contact": 6.14, "landing": 6.36 },
+    { "file": "2026-10-03_c", "start": 3.25, "trophy": 3.85, "racketDrop": 4.22, "contact": 4.30, "landing": 4.40 }
+  ]
+}

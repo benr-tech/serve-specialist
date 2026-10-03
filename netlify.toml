@@ -1,0 +1,18 @@
+# For connecting this repo to Netlify (Netlify builds it on every push).
+# For a one-off upload instead, run `npm run build` and drag the `dist` folder onto app.netlify.com/drop.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+# Cache the big, versioned runtime files; always re-check the page itself.
+[[headers]]
+  for = "/mediapipe-wasm/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
